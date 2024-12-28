@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+            text-align: center;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .answers button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .answers button:hover {
+            background: #0056b3;
+        }
+
+        .results {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1> <pre> welcome </pre>Interactive Quiz
+            
+        </h1>
+        <div id="quiz">
+            <div class="question"></div>
+            <div class="answers"></div>
+        </div>
+        <div class="results">
+            <p>Your Score: <span id="score"></span></p>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                answers: ["Berlin", "Madrid", "Paris", "Rome"],
+                correct: 2
+            },
+            {
+                question: "Which programming language is primarily used for web development?",
+                answers: ["Python", "JavaScript", "C++", "Java"],
+                correct: 1
+            },
+            {
+                question: "What is 2 + 2?",
+                answers: ["3", "4", "5", "6"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const quizContainer = document.getElementById('quiz');
+        const questionElement = document.querySelector('.question');
+        const answersElement = document.querySelector('.answers');
+        const resultsElement = document.querySelector('.results');
+        const scoreElement = document.getElementById('score');
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            questionElement.textContent = question.question;
+            answersElement.innerHTML = '';
+
+            question.answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.textContent = answer;
+                button.onclick = () => handleAnswer(index);
+                answersElement.appendChild(button);
+            });
+        }
+
+        function handleAnswer(selected) {
+            if (selected === questions[currentQuestion].correct) {
+                score++;
+            }
+
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                displayResults();
+            }
+        }
+
+        function displayResults() {
+            quizContainer.style.display = 'none';
+            resultsElement.style.display = 'block';
+            scoreElement.textContent = `${score} / ${questions.length}`;
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
